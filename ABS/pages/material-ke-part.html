@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Material ke PCS</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,Arial,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;background:radial-gradient(circle at top left,#292929,transparent 45%),linear-gradient(135deg,#111,#1c1c1c,#262626)}
+.container{width:100%;max-width:480px;background:rgba(255,255,255,.06);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:26px;padding:35px 25px;box-shadow:0 25px 60px rgba(0,0,0,.35);animation:appear .7s cubic-bezier(.22,1,.36,1)}
+h2{text-align:center;color:white;font-size:25px;font-weight:700;letter-spacing:.5px;margin-bottom:28px}
+label{display:block;color:#fdba74;font-size:14px;font-weight:600;margin-bottom:8px}
+input[type="number"]{width:100%;padding:14px;margin-bottom:20px;background:rgba(255,255,255,.05);border:1px solid rgba(253,186,116,.35);border-radius:12px;color:white;font-size:15px;outline:none;transition:border .3s}
+input[type="number"]:focus{border-color:#fdba74}
+input::placeholder{color:rgba(255,255,255,.35)}
+button{width:100%;padding:15px;background:#fdba74;color:#171717;font-size:15px;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:all .3s}
+button:hover{background:#fbad58;transform:translateY(-2px);box-shadow:0 10px 25px rgba(253,186,116,.15)}
+button:active{transform:scale(.97)}
+.result{display:none;margin-top:22px;padding:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:15px;text-align:center}
+.result p{color:rgba(255,255,255,.75);font-size:14px;line-height:1.7;margin:8px 0;overflow-wrap:anywhere}
+.result strong{color:#fdba74}
+@keyframes appear{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:480px){.container{padding:30px 20px}h2{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>MATERIAL KE PCS</h2>
+<label for="kg">Berat Material (Kg):</label>
+<input type="number" id="kg" step="0.01" min="0.01" placeholder="Masukkan berat dalam Kg">
+<label for="divisor">Berat per PCS (Gram):</label>
+<input type="number" id="divisor" step="0.01" min="0.01" placeholder="Masukkan berat per pcs">
+<button onclick="calculate()">Hitung</button>
+<div class="result" id="result"></div>
+</div>
+<script>
+function calculate(){
+const kg=parseFloat(document.getElementById('kg').value);
+const divisor=parseFloat(document.getElementById('divisor').value);
+if(!Number.isFinite(kg)||!Number.isFinite(divisor)||kg<=0||divisor<=0){alert("Masukkan angka yang valid!");return}
+const grams=kg*1000;
+const pcs=grams/divisor;
+const result=document.getElementById('result');
+result.style.display="block";
+result.innerHTML=`
+<p><strong>${kg.toLocaleString('id-ID')}</strong> kg × 1000 = <strong>${grams.toLocaleString('id-ID')}</strong> gram</p>
+<p><strong>${grams.toLocaleString('id-ID')}</strong> gram ÷ <strong>${divisor.toLocaleString('id-ID')}</strong> gram</p>
+<p>Total hasil = <strong>${pcs.toLocaleString('id-ID',{maximumFractionDigits:2})}</strong> pcs</p>
+`;
+}
+</script>
+</body>
+</html>

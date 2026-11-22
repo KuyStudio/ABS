@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Stock Opname</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,Arial,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;background:radial-gradient(circle at top left,#292929,transparent 45%),linear-gradient(135deg,#111,#1c1c1c,#262626)}
+.container{width:100%;max-width:480px;background:rgba(255,255,255,.06);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:26px;padding:35px 25px;box-shadow:0 25px 60px rgba(0,0,0,.35);animation:appear .7s cubic-bezier(.22,1,.36,1)}
+h2{text-align:center;color:white;font-size:25px;font-weight:700;letter-spacing:.5px;margin-bottom:28px}
+.form-group{margin-bottom:20px}
+label{display:block;color:#fdba74;font-size:14px;font-weight:600;margin-bottom:8px}
+input{width:100%;padding:14px;background:rgba(255,255,255,.05);border:1px solid rgba(253,186,116,.35);border-radius:12px;color:white;font-size:15px;outline:none;transition:border .3s}
+input:focus{border-color:#fdba74}
+input::placeholder{color:rgba(255,255,255,.35)}
+button{width:100%;padding:15px;background:#fdba74;color:#171717;font-size:15px;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:all .3s}
+button:hover{background:#fbad58;transform:translateY(-2px);box-shadow:0 10px 25px rgba(253,186,116,.15)}
+button:active{transform:scale(.97)}
+.result{display:none;margin-top:22px;padding:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:15px;text-align:center;color:rgba(255,255,255,.75);font-size:15px}
+.result span{display:block;color:#fdba74;font-size:25px;font-weight:700;margin-top:10px;overflow-wrap:anywhere}
+@keyframes appear{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:480px){.container{padding:30px 20px}h2{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>STOCK OPNAME</h2>
+<div class="form-group">
+<label for="endStock">End Stock</label>
+<input type="text" id="endStock" placeholder="Masukkan End Stock" inputmode="numeric" required>
+</div>
+<div class="form-group">
+<label for="delivery">Delivery</label>
+<input type="text" id="delivery" placeholder="Masukkan Delivery" inputmode="numeric" required>
+</div>
+<div class="form-group">
+<label for="begStock">Beg Stock</label>
+<input type="text" id="begStock" placeholder="Masukkan Beg Stock" inputmode="numeric" required>
+</div>
+<button type="button" onclick="calculateProduction()">Production</button>
+<div id="result" class="result">
+Production:
+<span id="productionResult"></span>
+</div>
+</div>
+<script>
+function formatNumber(input){
+const rawNumber=input.replace(/\D/g,'');
+return rawNumber.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+}
+function unformatNumber(input){
+return parseInt(input.replace(/\./g,''),10)||0;
+}
+document.querySelectorAll('input[type="text"]').forEach(input=>{
+input.addEventListener('input',()=>{
+const cursorPosition=input.selectionStart;
+const rawValue=input.value.replace(/\./g,'');
+const formattedValue=formatNumber(rawValue);
+input.value=formattedValue;
+const diff=formattedValue.length-rawValue.length;
+const position=Math.max(0,Math.min(input.value.length,cursorPosition+diff));
+input.setSelectionRange(position,position);
+});
+});
+function calculateProduction(){
+const endStock=unformatNumber(document.getElementById('endStock').value);
+const delivery=unformatNumber(document.getElementById('delivery').value);
+const begStock=unformatNumber(document.getElementById('begStock').value);
+if(!document.getElementById('endStock').value||!document.getElementById('delivery').value||!document.getElementById('begStock').value){
+alert('Mohon isi semua kolom dengan angka yang valid.');
+return;
+}
+const production=endStock+delivery-begStock;
+document.getElementById('productionResult').textContent=production.toLocaleString('id-ID');
+document.getElementById('result').style.display='block';
+}
+</script>
+</body>
+</html>
